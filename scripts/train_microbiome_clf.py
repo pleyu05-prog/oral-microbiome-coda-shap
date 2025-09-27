@@ -22,13 +22,24 @@ def eval_and_plot(clf, Xtr, Xte, ytr, yte, name):
     acc = accuracy_score(yte, yp)
     f1  = f1_score(yte, yp, average="macro")
     print(f"{name}: acc={acc:.3f}, macroF1={f1:.3f}")
+        # 混淆矩阵（把下划线换成换行、加大画布、旋转 x 轴标签）
     labels = sorted(yte.unique())
+    disp_labels = [s.replace("_", "\n") for s in labels]
+
     cm = confusion_matrix(yte, yp, labels=labels)
-    fig, ax = plt.subplots(figsize=(5,5))
-    ConfusionMatrixDisplay(cm, display_labels=labels).plot(ax=ax, cmap="Blues", colorbar=False)
-    ax.set_title(f"{name} Confusion Matrix"); fig.tight_layout()
+    fig, ax = plt.subplots(figsize=(8, 6))  # ← 原来是 (5,5)
+    ConfusionMatrixDisplay(cm, display_labels=disp_labels).plot(
+        ax=ax, cmap="Blues", colorbar=False
+    )
+    ax.tick_params(axis="x", labelrotation=30, labelsize=9)  # ← 旋转+减小字号
+    ax.tick_params(axis="y", labelsize=9)
+    ax.set_title(f"{name} Confusion Matrix")
+    fig.subplots_adjust(bottom=0.28)  # ← 给 x 轴标签留空间
+    fig.tight_layout()
     ASSETS.mkdir(exist_ok=True)
-    fig.savefig(ASSETS / f"{name}_confusion.png", dpi=150); plt.close(fig)
+    fig.savefig(ASSETS / f"{name}_confusion.png", dpi=150)
+    plt.close(fig)
+
     return acc, f1
 
 def shap_bar(values, feat_names, k, out_png, title):
@@ -74,12 +85,22 @@ def main():
     print(f"XGBoost: acc={acc2:.3f}, macroF1={f12:.3f}")
 
     labels = sorted(yte.unique())
+    disp_labels = [s.replace("_", "\n") for s in labels]
+
     cm = confusion_matrix(yte, pred, labels=labels)
-    fig, ax = plt.subplots(figsize=(5,5))
-    ConfusionMatrixDisplay(cm, display_labels=labels).plot(ax=ax, cmap="Blues", colorbar=False)
-    ax.set_title("XGBoost Confusion Matrix"); fig.tight_layout()
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ConfusionMatrixDisplay(cm, display_labels=disp_labels).plot(
+        ax=ax, cmap="Blues", colorbar=False
+    )
+    ax.tick_params(axis="x", labelrotation=30, labelsize=9)
+    ax.tick_params(axis="y", labelsize=9)
+    ax.set_title("XGBoost Confusion Matrix")
+    fig.subplots_adjust(bottom=0.28)
+    fig.tight_layout()
     ASSETS.mkdir(exist_ok=True)
-    fig.savefig(ASSETS / "XGBoost_confusion.png", dpi=150); plt.close(fig)
+    fig.savefig(ASSETS / "XGBoost_confusion.png", dpi=150)
+    plt.close(fig)
+
 
     # === SHAP ===
     try:
