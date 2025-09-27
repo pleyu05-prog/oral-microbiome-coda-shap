@@ -17,8 +17,9 @@ Classify **oral subsites** (tongue/buccal/plaque/saliva/…) from 16S profiles u
     LogRegL1  acc=0.932  macroF1=0.522
     XGBoost   acc=0.922  macroF1=0.500
     ### Per-class reports
-- [LogReg per-class metrics](assets/LogRegL1_classification_report.txt)
-- [XGBoost per-class metrics](assets/XGBoost_classification_report.txt)
+### Per-class reports
+- [LogReg per-class metrics (txt)](assets/LogRegL1_classification_report.txt) · [CSV](assets/LogRegL1_classification_report.csv)
+- [XGBoost per-class metrics (txt)](assets/XGBoost_classification_report.txt) · [CSV](assets/XGBoost_classification_report.csv)
 
 
 ## Figures
