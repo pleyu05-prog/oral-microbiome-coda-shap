@@ -4,7 +4,7 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt, shap
 from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, ConfusionMatrixDisplay, classification_report
 from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
@@ -23,6 +23,14 @@ def eval_and_plot(clf, Xtr, Xte, ytr, yte, name):
     f1  = f1_score(yte, yp, average="macro")
     print(f"{name}: acc={acc:.3f}, macroF1={f1:.3f}")
         # 混淆矩阵（把下划线换成换行、加大画布、旋转 x 轴标签）
+            # —— 新增：保存分类报告（txt + csv）——
+    ASSETS.mkdir(exist_ok=True)
+    report_txt = classification_report(yte, yp, digits=3)
+    with open(ASSETS / f"{name}_classification_report.txt", "w", encoding="utf-8") as f:
+        f.write(report_txt)
+    report_df = pd.DataFrame(classification_report(yte, yp, output_dict=True)).transpose()
+    report_df.to_csv(ASSETS / f"{name}_classification_report.csv", index=True)
+
     labels = sorted(yte.unique())
     disp_labels = [s.replace("_", "\n") for s in labels]
 
@@ -83,6 +91,14 @@ def main():
     acc2 = accuracy_score(yte, pred)
     f12  = f1_score(yte, pred, average="macro")
     print(f"XGBoost: acc={acc2:.3f}, macroF1={f12:.3f}")
+        # —— 新增：保存分类报告（txt + csv）——
+    ASSETS.mkdir(exist_ok=True)
+    report_txt = classification_report(yte, pred, digits=3)
+    with open(ASSETS / "XGBoost_classification_report.txt", "w", encoding="utf-8") as f:
+        f.write(report_txt)
+    report_df = pd.DataFrame(classification_report(yte, pred, output_dict=True)).transpose()
+    report_df.to_csv(ASSETS / "XGBoost_classification_report.csv", index=True)
+
 
     labels = sorted(yte.unique())
     disp_labels = [s.replace("_", "\n") for s in labels]

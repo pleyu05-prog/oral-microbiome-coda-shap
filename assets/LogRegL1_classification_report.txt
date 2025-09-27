@@ -1,0 +1,13 @@
+                      precision    recall  f1-score   support
+
+       buccal_mucosa      0.931     0.900     0.915        30
+ keratinized_gingiva      0.000     0.000     0.000         1
+    palatine_tonsils      0.000     0.000     0.000         1
+              saliva      0.000     0.000     0.000         1
+  subgingival_plaque      0.667     1.000     0.800         2
+supragingival_plaque      0.941     0.970     0.955        33
+       tongue_dorsum      0.972     1.000     0.986        35
+
+            accuracy                          0.932       103
+           macro avg      0.502     0.553     0.522       103
+        weighted avg      0.916     0.932     0.923       103
