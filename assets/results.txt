@@ -1,0 +1,2 @@
+LogRegL1 acc=0.932 macroF1=0.522
+XGBoost  acc=0.922 macroF1=0.500
